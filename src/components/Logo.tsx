@@ -2,12 +2,37 @@ import { cn } from "../lib/utils";
 
 type LogoProps = {
   expand?: boolean;
+  size?: "sm" | "md" | "lg";
+  className?: string;
 };
 
-export default function Logo(props: LogoProps) {
+export default function Logo({ size = "lg", ...props }: LogoProps) {
+  const sizes = {
+    sm: {
+      parent: "size-8",
+      child: "size-2",
+      text: "text-xl",
+    },
+    md: {
+      parent: "size-10",
+      child: "size-2.75",
+      text: "text-2xl",
+    },
+    lg: {
+      parent: "size-12",
+      child: "size-4",
+      text: "text-4xl",
+    },
+  };
+
   return (
-    <div className="flex gap-2 items-center mb-10">
-      <div className="grid place-content-center size-12 rounded-lg bg-white">
+    <div className={cn("flex gap-2 items-center", props.className)}>
+      <div
+        className={cn(
+          "grid place-content-center rounded-lg bg-white",
+          sizes[size].parent,
+        )}
+      >
         <div className="grid grid-cols-2 gap-1">
           {Array(4)
             .fill(null)
@@ -16,7 +41,8 @@ export default function Logo(props: LogoProps) {
                 <div
                   key={idx}
                   className={cn(
-                    "bg-primary size-4 rounded-xs",
+                    "bg-primary rounded-xs",
+                    sizes[size].child,
                     idx === 3 ? "bg-surface" : "bg-primary",
                   )}
                 />
@@ -24,7 +50,7 @@ export default function Logo(props: LogoProps) {
             })}
         </div>
       </div>
-      {props.expand && <span className="text-4xl">WMSpaceIO</span>}
+      {props.expand && <span className={cn(sizes[size].text)}>WMSpaceIO</span>}
     </div>
   );
 }

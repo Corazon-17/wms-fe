@@ -24,7 +24,7 @@ const LeftSection = () => {
   return (
     <div className="hidden lg:grid place-content-center w-full bg-primary text-white">
       <div className="flex flex-col gap-4 max-w-107">
-        <Logo expand />
+        <Logo className="mb-10" expand />
         <span className="mt-10">WMS DASHBOARD</span>
         <div className="flex flex-col gap-4 text-5xl font-bold">
           <span>Manage your</span>
