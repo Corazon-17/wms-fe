@@ -14,10 +14,15 @@ import { Bell, LogOut, MenuSquare } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 
+const handleLogout = () => {
+  localStorage.clear();
+  window.location.replace("/");
+};
+
 export default function Layout() {
   return (
     <div className="flex flex-col w-full min-h-screen">
-      <div className="flex sticky top-0 w-full justify-between items-center h-20 px-4 md:px-8 lg:px-12 bg-primary text-white">
+      <div className="flex sticky top-0 z-50 w-full justify-between items-center h-20 px-4 md:px-8 lg:px-12 bg-primary text-white">
         <Logo size="md" expand />
         <HeaderMenu className="hidden md:flex" />
         <HeaderUtility />
@@ -67,7 +72,11 @@ const HeaderUtility = () => {
         <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <Button variant="ghost" className="p-0 hidden md:block">
+      <Button
+        variant="ghost"
+        className="p-0 hidden md:block"
+        onClick={handleLogout}
+      >
         <LogOut className="size-6" />
       </Button>
       <HeaderMobile className="block md:hidden" />
@@ -114,7 +123,11 @@ const HeaderMobile = (props: HeaderProps) => {
             })}
           </div>
 
-          <Button variant="destructive" className="py-5 justify-self-end mb-4">
+          <Button
+            variant="destructive"
+            className="py-5 justify-self-end mb-4"
+            onClick={handleLogout}
+          >
             <LogOut />
             Logout
           </Button>

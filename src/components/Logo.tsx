@@ -29,8 +29,9 @@ export default function Logo({ size = "lg", ...props }: LogoProps) {
     <div className={cn("flex gap-2 items-center", props.className)}>
       <div
         className={cn(
-          "grid place-content-center rounded-lg bg-white",
+          "grid place-content-center bg-white",
           sizes[size].parent,
+          size === "lg" ? "rounded-lg" : "rounded-md",
         )}
       >
         <div className="grid grid-cols-2 gap-1">

@@ -4,7 +4,7 @@ export type LoginPayload = {
 };
 
 export type AuthResponse = {
-  accessToken: string;
+  token: string;
 };
 
 export type UserData = {

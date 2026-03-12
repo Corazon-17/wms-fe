@@ -1,29 +1,20 @@
 import { useNavigate } from "react-router";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginWithEmailAndPassword, logout } from "../api/auth.api";
-import type { LoginPayload } from "../types/auth.type";
+import type { Response } from "@/types/request";
+import { useMutation } from "@tanstack/react-query";
+import { loginWithEmailAndPassword } from "../api/auth.api";
+import type { AuthResponse, LoginPayload } from "../types/auth.type";
 
 export const useLogin = () => {
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (data: LoginPayload) => loginWithEmailAndPassword(data),
-    onSuccess: () => {
-      navigate("/dashboard/profile");
-    },
-  });
-};
+    onSuccess: (res: Response<AuthResponse>) => {
+      const accessToken = res.data.token;
+      localStorage.setItem("token", accessToken);
 
-export const useLogout = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: () => logout(),
-    onSuccess: async () => {
-      await queryClient.removeQueries({ queryKey: ["auth-user"] });
-      navigate("/");
+      navigate("/dashboard/outbound");
     },
   });
 };

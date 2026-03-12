@@ -31,13 +31,18 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "admin@gmail.com",
+      password: "password",
+    },
   });
 
   const onSubmit = (data: LoginType) => {
     mutate(data);
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <FieldGroup className="gap-2">
         <Field>
           <FieldLabel htmlFor="email">Email Address</FieldLabel>
@@ -114,6 +119,7 @@ export default function LoginForm() {
             Sign up for free
           </Button>
         </div>
+        {isPending && <span>Pending</span>}
       </FieldGroup>
     </form>
   );
