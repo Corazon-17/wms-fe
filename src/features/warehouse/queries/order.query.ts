@@ -4,6 +4,7 @@ import {
   getOrder,
   getOrderItems,
   getOrders,
+  getOrderSummary,
   getShippingStatuses,
   getWMSStatuses,
 } from "../api/order.api";
@@ -53,5 +54,12 @@ export const useShippingStatuses = (enabled: boolean = false) => {
     queryKey: ["shipping-statuses"],
     queryFn: () => getShippingStatuses().then((res) => res.data),
     enabled: enabled,
+  });
+};
+
+export const useOrderSummary = () => {
+  return useQuery({
+    queryKey: ["order-summary"],
+    queryFn: () => getOrderSummary().then((res) => res.data),
   });
 };

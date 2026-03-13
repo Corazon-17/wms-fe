@@ -5,6 +5,7 @@ import type {
   OrderItem,
   OrderListResponse,
   OrderQueryParams,
+  OrderSummaryResponse,
   WMSStatusResponse,
 } from "../types/order.type";
 
@@ -36,10 +37,6 @@ export const getOrderItems = (
   return axiosClient.get(`/orders/${orderSN}/items`);
 };
 
-export const syncOrders = () => {
-  return axiosClient.post("/orders/sync");
-};
-
 export const pickupOrder = (orderSN: string) => {
   return axiosClient.post(`/orders/${orderSN}/pick`);
 };
@@ -50,4 +47,8 @@ export const packOrder = (orderSN: string) => {
 
 export const shipOrder = (orderSN: string) => {
   return axiosClient.post(`/orders/${orderSN}/ship`);
+};
+
+export const getOrderSummary = (): Promise<Response<OrderSummaryResponse>> => {
+  return axiosClient.get("/api/orders/summary");
 };

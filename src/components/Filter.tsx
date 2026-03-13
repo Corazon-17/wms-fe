@@ -20,9 +20,9 @@ const sortOptions = [
   { label: "Z - A", value: "desc" },
 ];
 
-type Sort = "asc" | "desc";
+type SortDir = "asc" | "desc";
 type FilterValue = {
-  sort: Sort;
+  sort: SortDir;
   filter: string[];
 };
 
@@ -39,7 +39,7 @@ export function Filter(props: FilterProps) {
     props.options ? "filter" : "sort",
   );
   const [search, setSearch] = useState<string>("");
-  const [sort, setSort] = useState<Sort>("desc");
+  const [sort, setSort] = useState<SortDir>("desc");
   const [selected, setSelected] = useState<string[]>([]);
 
   const handleClick = (value: string) => {
@@ -125,7 +125,7 @@ export function Filter(props: FilterProps) {
                     "justify-start h-10 rounded-md hover:bg-surface hover:border-primary",
                     sort === opt.value && "bg-surface border-primary",
                   )}
-                  onClick={() => setSort(opt.value as Sort)}
+                  onClick={() => setSort(opt.value as SortDir)}
                 >
                   {opt.label}
                 </Button>

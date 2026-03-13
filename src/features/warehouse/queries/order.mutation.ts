@@ -1,29 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  packOrder,
-  pickupOrder,
-  shipOrder,
-  syncOrders,
-} from "../api/order.api";
-
-export const useSyncOrders = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: () => syncOrders(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-  });
-};
+import { toast } from "sonner";
+import { packOrder, pickupOrder, shipOrder } from "../api/order.api";
 
 export const usePickupOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (orderSN: string) => pickupOrder(orderSN),
-    onSuccess: () => {
+    onSuccess: (res, orderSN) => {
+      queryClient.invalidateQueries({ queryKey: ["order", orderSN] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+
+      toast.success(res.data.message);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data.error);
     },
   });
 };
@@ -33,8 +24,14 @@ export const usePackOrder = () => {
 
   return useMutation({
     mutationFn: (orderSN: string) => packOrder(orderSN),
-    onSuccess: () => {
+    onSuccess: (res, orderSN) => {
+      queryClient.invalidateQueries({ queryKey: ["order", orderSN] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+
+      toast.success(res.data.message);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data.error);
     },
   });
 };
@@ -44,8 +41,14 @@ export const useShipOrder = () => {
 
   return useMutation({
     mutationFn: (orderSN: string) => shipOrder(orderSN),
-    onSuccess: () => {
+    onSuccess: (res, orderSN) => {
+      queryClient.invalidateQueries({ queryKey: ["order", orderSN] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+
+      toast.success(res.data.message);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data.error);
     },
   });
 };

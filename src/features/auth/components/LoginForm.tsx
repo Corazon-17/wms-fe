@@ -13,6 +13,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { Spinner } from "@/components/ui/spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
@@ -20,7 +21,12 @@ import { useForm } from "react-hook-form";
 import { useLogin } from "../queries/auth.mutation";
 import { loginSchema, type LoginType } from "../schemas/auth.schema";
 
-export default function LoginForm() {
+type LoginProps = {
+  onSuccess?: () => void;
+  onError?: () => void;
+};
+
+export default function LoginForm(props: LoginProps) {
   const { mutate, isPending } = useLogin();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,7 +44,17 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginType) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => props.onSuccess?.(),
+      onError: () => props.onError?.(),
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    mutate({
+      email: "admin@gmail.com",
+      password: "password",
+    });
   };
 
   return (
@@ -97,7 +113,7 @@ export default function LoginForm() {
         </div>
         <Field className="mt-4">
           <Button type="submit" className="h-10" disabled={isPending}>
-            Sign in to Dashboard
+            {isPending ? <Spinner /> : "Sign in to Dashboard"}
           </Button>
         </Field>
         <div className="relative border-b w-full h-1 my-6">
@@ -109,6 +125,7 @@ export default function LoginForm() {
           variant="outline"
           type="button"
           className="h-10"
+          onClick={handleGoogleLogin}
           disabled={isPending}
         >
           <img src={google} alt="google-logo" /> Continue with Google

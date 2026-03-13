@@ -21,7 +21,7 @@ import { useQueryParams } from "@/hooks/useQueryParams";
 import { formatFullDate } from "@/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Search } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Outbound() {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
@@ -50,23 +50,14 @@ export default function Outbound() {
   );
   const wmsStatusOptions = useWMSStatusOptions(filterField === "wms_status");
 
-  const filterOptions = useMemo(() => {
-    switch (filterField) {
-      case "marketplace_status":
-        return marketplaceStatusOptions;
-      case "shipping_status":
-        return shippingStatusOptions;
-      case "wms_status":
-        return wmsStatusOptions;
-      default:
-        return [];
-    }
-  }, [
-    filterField,
-    marketplaceStatusOptions,
-    shippingStatusOptions,
-    wmsStatusOptions,
-  ]);
+  const filterOptionMap = {
+    marketplace_status: marketplaceStatusOptions,
+    shipping_status: shippingStatusOptions,
+    wms_status: wmsStatusOptions,
+  };
+  type FilterOptionKey = keyof typeof filterOptionMap;
+
+  const filterOptions = filterOptionMap[filterField as FilterOptionKey];
 
   const columns: ColumnDef<Order>[] = [
     {
@@ -184,7 +175,7 @@ export default function Outbound() {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-4 p-2 rounded-md border">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 rounded-md border">
         <InputGroup>
           <InputGroupInput
             id="search"
@@ -195,7 +186,7 @@ export default function Outbound() {
             <Search />
           </InputGroupAddon>
         </InputGroup>
-        <div className="border-l"></div>
+        <div className="border-l hidden sm:block"></div>
       </div>
 
       <DataTable
@@ -214,6 +205,7 @@ export default function Outbound() {
           updateParams({
             filterField: filterField ? (filterField as string) : undefined,
             filterValues: value.filter.join(","),
+            sortDir: value.sort,
           })
         }
       />

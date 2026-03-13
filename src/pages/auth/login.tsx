@@ -1,19 +1,34 @@
 import { Logo } from "@/components";
+import { LoginErrorAlert } from "@/features/auth/components/LoginErrorAlert";
 import LoginForm from "@/features/auth/components/LoginForm";
+import { LoginSuccessAlert } from "@/features/auth/components/loginSuccessAlert";
+import { useState } from "react";
 
 export default function Login() {
+  const [loginStatus, setLoginStatus] = useState<"success" | "error" | null>(
+    null,
+  );
+
   return (
     <div className="grid lg:grid-cols-2 w-full min-h-screen">
       <LeftSection />
 
       <div className="grid place-items-center w-full min-h-screen p-4">
         <div className="flex flex-col gap-10 w-full max-w-123">
+          {loginStatus === "error" && (
+            <LoginErrorAlert onCloseButtonClick={() => setLoginStatus(null)} />
+          )}
+          {loginStatus === "success" && <LoginSuccessAlert />}
+
           <div className="flex flex-col gap-2">
             <span className="text-3xl md:text-5xl font-bold">Welcome Back</span>
             <p>Sign in to your account to continue</p>
           </div>
 
-          <LoginForm />
+          <LoginForm
+            onSuccess={() => setLoginStatus("success")}
+            onError={() => setLoginStatus("error")}
+          />
         </div>
       </div>
     </div>

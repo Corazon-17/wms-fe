@@ -1,4 +1,4 @@
-type AllowedActions = "pickup" | "pack" | "ship";
+export type ActionType = "pick" | "pack" | "ship";
 
 export type Order = {
   orderSN: string;
@@ -7,7 +7,7 @@ export type Order = {
   shippingStatus: string;
   trackingNumber?: string;
   totalAmount: number;
-  allowedActions: AllowedActions;
+  allowedAction: ActionType;
   createdAt: string;
   updatedAt: string;
 };
@@ -49,4 +49,9 @@ export type OrderQueryParams = {
 export type WMSStatusResponse = {
   id: string;
   name: string;
+};
+
+export type OrderSummaryResponse = {
+  totalOrders: number;
+  cancelledOrders: number;
 };
