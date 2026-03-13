@@ -53,7 +53,37 @@ The frontend communicates with the backend service that integrates with the **Ma
   - Ship
 - Dashboard order summary
 - API integration with WMS backend
-- Dynamic UI based on `allowedActions` from backend
+- Dynamic UI based on `allowedAction` from backend
+
+---
+
+# Project Structure
+
+```
+src
+ ├── components        # Reusable UI components
+ ├── features          # Feature-based modules
+ │   ├── auth
+ │   └── orders
+ │
+ ├── hooks             # Shared React hooks
+ ├── lib               # Utilities (axios, helpers)
+ ├── schemas           # Zod validation schemas
+ ├── types             # Shared TypeScript types
+ ├── pages             # Route pages
+ └── main.tsx
+```
+
+Feature modules typically contain:
+
+```
+features/orders
+ ├── api
+ ├── query
+ ├── mutation
+ ├── types
+ └── components
+```
 
 ---
 
