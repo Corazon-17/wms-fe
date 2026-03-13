@@ -134,21 +134,6 @@ Server state is managed using **TanStack Query**, and all API requests are handl
 
 UI components are built using **Shadcn/UI** and styled with **TailwindCSS**.
 
-Examples include:
-
-- Button
-- Input
-- Table
-- Dialog
-- Card
-
-Tables are implemented using **TanStack Table** to support:
-
-- Sorting
-- Pagination
-- Column configuration
-- Dynamic rendering
-
 ---
 
 # Forms
@@ -178,6 +163,20 @@ Validated form submission
 
 ---
 
-# License
+# Application Screenshots
 
-This project is for technical assessment purposes.
+## Login
+
+<p align="center"> <img src="screenshots/Login Page.png" width="45%"> <img src="screenshots/Login Page (Success).png" width="45%"> </p> <p align="center"> <img src="screenshots/Login Page (Error).png" width="45%"> </p>
+
+## Outbound Dashboard
+
+<p align="center"> <img src="screenshots/Dahboard (Outbound).png" width="45%"> <img src="screenshots/Dahboard (Outbound) - Order Detail.png" width="45%"> </p>
+
+## Table Filtering
+
+<p align="center"> <img src="screenshots/Dahboard (Outbound) - Table Filter (Marketplace Status).png" width="45%"> <img src="screenshots/Dahboard (Outbound) - Table Filter (Shipping Status).png" width="45%"> </p> <p align="center"> <img src="screenshots/Dahboard (Outbound) - Table Filter (WMS Status).png" width="45%"> </p>
+
+## Table Sorting
+
+<p align="center"> <img src="screenshots/Dahboard (Outbound) - Table Sort.png" width="45%"> </p>
