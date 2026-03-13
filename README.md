@@ -61,28 +61,32 @@ The frontend communicates with the backend service that integrates with the **Ma
 
 ```
 src
+ ├── app               # Main app folder (routes)
+ ├── assets            # Project assets
  ├── components        # Reusable UI components
+ ├── constants         # Constants data
  ├── features          # Feature-based modules
  │   ├── auth
- │   └── orders
+ │   └── warehouse
  │
  ├── hooks             # Shared React hooks
  ├── lib               # Utilities (axios, helpers)
- ├── schemas           # Zod validation schemas
  ├── types             # Shared TypeScript types
  ├── pages             # Route pages
+ └── index.css
  └── main.tsx
 ```
 
 Feature modules typically contain:
 
 ```
-features/orders
+features/warehouse
  ├── api
- ├── query
- ├── mutation
- ├── types
- └── components
+ ├── components
+ ├── hooks
+ ├── queries
+ ├── schemas
+ └── types
 ```
 
 ---
