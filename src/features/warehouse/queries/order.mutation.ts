@@ -1,5 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { packOrder, pickOrder, shipOrder, syncOrders } from "../api/order.api";
+import {
+  packOrder,
+  pickupOrder,
+  shipOrder,
+  syncOrders,
+} from "../api/order.api";
 
 export const useSyncOrders = () => {
   const queryClient = useQueryClient();
@@ -12,11 +17,11 @@ export const useSyncOrders = () => {
   });
 };
 
-export const usePickOrder = () => {
+export const usePickupOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (orderSN: string) => pickOrder(orderSN),
+    mutationFn: (orderSN: string) => pickupOrder(orderSN),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },

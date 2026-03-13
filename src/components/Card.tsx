@@ -8,7 +8,7 @@ type CardProps = {
   status: "up" | "down";
 };
 
-export default function Card(props: CardProps) {
+export function Card(props: CardProps) {
   return (
     <div className="flex flex-col gap-1 justify-center w-full h-25 border rounded-md px-4 py-1">
       <span className="text-xs mb-1.5 text-neutral-500">{props.title}</span>

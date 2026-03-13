@@ -3,7 +3,7 @@ type TitleProps = {
   subTitle?: string;
 };
 
-export default function Title(props: TitleProps) {
+export function PageTitle(props: TitleProps) {
   return (
     <div className="flex flex-col gap-1">
       <h1 className="text-2xl font-bold">{props.title}</h1>

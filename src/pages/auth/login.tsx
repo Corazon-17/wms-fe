@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import { Logo } from "@/components";
 import LoginForm from "@/features/auth/components/LoginForm";
 
 export default function Login() {

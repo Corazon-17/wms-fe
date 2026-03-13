@@ -18,7 +18,7 @@ export const getStatusStyle = (status: string) => {
   }
 };
 
-export const formatStatusLabel = (status: string): string => {
+export const formatStatusLabel = (status?: string): string => {
   if (!status) return "";
 
   return status

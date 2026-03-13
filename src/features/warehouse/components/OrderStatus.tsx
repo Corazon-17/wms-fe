@@ -6,7 +6,7 @@ type StatusProps = {
   label?: string;
 };
 
-export default function Status(props: StatusProps) {
+export default function OrderStatus(props: StatusProps) {
   return (
     <div className="flex w-full justify-center">
       <div

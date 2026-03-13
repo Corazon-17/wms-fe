@@ -1,3 +1,5 @@
+type AllowedActions = "pickup" | "pack" | "ship";
+
 export type Order = {
   orderSN: string;
   wmsStatus: string;
@@ -5,8 +7,19 @@ export type Order = {
   shippingStatus: string;
   trackingNumber?: string;
   totalAmount: number;
-  allowed_actions: string[];
+  allowedActions: AllowedActions;
+  createdAt: string;
   updatedAt: string;
+};
+
+export type OrderItem = {
+  sku: string;
+  quantity: number;
+  price: number;
+};
+
+export type OrderDetail = Order & {
+  items: OrderItem[];
 };
 
 export type OrderListResponse = {
@@ -26,13 +39,14 @@ export type OrderListResponse = {
 export type OrderQueryParams = {
   page?: number;
   pageSize?: number;
-  wmsStatus?: string;
-  sort?: string;
-  order?: "asc" | "desc";
+  search?: string;
+  filterField?: string;
+  filterValues?: string;
+  sortField?: string;
+  sortDir?: "asc" | "desc";
 };
 
-export type OrderItem = {
-  sku: string;
-  quantity: number;
-  price: number;
+export type WMSStatusResponse = {
+  id: string;
+  name: string;
 };

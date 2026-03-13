@@ -1,4 +1,3 @@
-import Logo from "@/components/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Bell, LogOut, MenuSquare } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
+import { Logo } from "../Logo";
 
 const handleLogout = () => {
   localStorage.clear();

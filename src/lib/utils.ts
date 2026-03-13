@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const formatFullDate = (isoString: string) => {
+export const formatFullDate = (isoString?: string) => {
   if (!isoString) return "";
 
   const date = new Date(isoString);

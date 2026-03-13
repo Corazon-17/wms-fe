@@ -8,35 +8,85 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import type { Option } from "@/types";
 import { ArrowUpNarrowWide, List, Search } from "lucide-react";
 import { useState, type Dispatch, type ReactNode } from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Field, FieldLabel } from "./ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 
-type FilterProps = {
-  open: boolean;
-  trigger: ReactNode;
-  onOpenChange: Dispatch<boolean>;
+const sortOptions = [
+  { label: "A - Z", value: "asc" },
+  { label: "Z - A", value: "desc" },
+];
+
+type Sort = "asc" | "desc";
+type FilterValue = {
+  sort: Sort;
+  filter: string[];
 };
 
-export default function Filter(props: FilterProps) {
-  const [type, setType] = useState<"sort" | "filter">("sort");
+type FilterProps = {
+  open: boolean;
+  trigger?: ReactNode;
+  options?: Option[];
+  onOpenChange: Dispatch<boolean>;
+  onSave?: (value: FilterValue) => void;
+};
+
+export function Filter(props: FilterProps) {
+  const [type, setType] = useState<"sort" | "filter">(
+    props.options ? "filter" : "sort",
+  );
   const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<Sort>("desc");
+  const [selected, setSelected] = useState<string[]>([]);
 
-  const sortOptions = [
-    { label: "A - Z", value: "asc" },
-    { label: "Z - A", value: "desc" },
-  ];
+  const handleClick = (value: string) => {
+    const isSelected = selected.includes(value);
+    if (isSelected) {
+      setSelected((curr) => curr.filter((val) => val !== value));
+    } else {
+      setSelected((curr) => [...curr, value]);
+    }
+  };
 
-  const filteredOptions = sortOptions.filter((opt) =>
+  const handleReset = () => {
+    setSelected([]);
+  };
+
+  const handleSave = () => {
+    const value: FilterValue = {
+      sort: sort,
+      filter: selected,
+    };
+
+    if (props.onSave) {
+      props.onSave(value);
+      props.onOpenChange(false);
+    }
+  };
+
+  const filteredOptions = props.options?.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
-    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <DialogTrigger asChild>{props.trigger}</DialogTrigger>
-      <DialogContent className="p-0 overflow-hidden" showCloseButton={false}>
+    <Dialog
+      open={props.open}
+      onOpenChange={(isOpen) => {
+        props.onOpenChange(isOpen);
+        if (!isOpen) {
+          handleReset();
+        }
+      }}
+    >
+      {props.trigger && <DialogTrigger asChild>{props.trigger}</DialogTrigger>}
+      <DialogContent
+        className="p-0 overflow-hidden"
+        showCloseButton={false}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader hidden>
           <DialogTitle></DialogTitle>
         </DialogHeader>
@@ -49,6 +99,7 @@ export default function Filter(props: FilterProps) {
                 type === "sort" && "bg-surface text-primary",
               )}
               onClick={() => setType("sort")}
+              defaultChecked={false}
             >
               <ArrowUpNarrowWide className="size-6" />
             </Button>
@@ -70,7 +121,11 @@ export default function Filter(props: FilterProps) {
                 <Button
                   key={opt.value}
                   variant="ghost"
-                  className="justify-start h-10 rounded-md hover:bg-surface hover:border-primary"
+                  className={cn(
+                    "justify-start h-10 rounded-md hover:bg-surface hover:border-primary",
+                    sort === opt.value && "bg-surface border-primary",
+                  )}
+                  onClick={() => setSort(opt.value as Sort)}
                 >
                   {opt.label}
                 </Button>
@@ -89,24 +144,57 @@ export default function Filter(props: FilterProps) {
                   <Search />
                 </InputGroupAddon>
               </InputGroup>
-              {filteredOptions.map((opt) => (
-                <Field
-                  orientation="horizontal"
-                  className="px-3 py-2 border border-transparent rounded-md text-neutral-400 hover:bg-surface hover:border-primary hover:text-black"
-                >
-                  <Checkbox id={opt.value} name={opt.value} />
-                  <FieldLabel htmlFor={opt.value}>{opt.label}</FieldLabel>
-                </Field>
-              ))}
+              {filteredOptions && filteredOptions.length > 0 ? (
+                filteredOptions?.map((opt) => {
+                  const isSelected = selected.includes(opt.value);
+
+                  return (
+                    <Field
+                      key={opt.value}
+                      orientation="horizontal"
+                      className={cn(
+                        "relative px-3 py-2 border border-transparent rounded-md transition-all", // Added 'relative'
+                        "text-neutral-400 hover:bg-surface hover:border-primary hover:text-black",
+                        isSelected && "bg-surface border-primary text-black",
+                      )}
+                    >
+                      <div
+                        className="absolute inset-0 z-10 cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleClick(opt.value);
+                        }}
+                      />
+
+                      <div className="flex items-center gap-3 pointer-events-none">
+                        <Checkbox
+                          id={opt.value}
+                          checked={isSelected}
+                          aria-readonly
+                        />
+                        <FieldLabel
+                          htmlFor={opt.value}
+                          className="cursor-pointer"
+                        >
+                          {opt.label}
+                        </FieldLabel>
+                      </div>
+                    </Field>
+                  );
+                })
+              ) : (
+                <span className="text-center my-2">No data found.</span>
+              )}
             </div>
           )}
         </div>
 
         <DialogFooter className="text-xs py-3 mb-1 mr-1">
-          <Button variant="ghost" className="w-14 h-10">
+          <Button variant="ghost" className="w-14 h-10" onClick={handleReset}>
             Reset
           </Button>
-          <Button variant="default" className="w-14 h-10">
+          <Button variant="default" className="w-14 h-10" onClick={handleSave}>
             Save
           </Button>
         </DialogFooter>

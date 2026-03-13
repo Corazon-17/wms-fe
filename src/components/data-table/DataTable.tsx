@@ -7,6 +7,7 @@ import { useMemo } from "react";
 
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { cn } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
 import { Spinner } from "../ui/spinner";
 import {
@@ -125,10 +126,15 @@ export function DataTable<TData, TValue>({
                     return (
                       <TableHead
                         key={header.id}
-                        className="relative h-10 truncate data-pinned:bg-muted/90 data-pinned:backdrop-blur-xs [&:not([data-pinned]):has(+[data-pinned])_div.cursor-col-resize:last-child]:opacity-0 [&[data-last-col=left]_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right]:last-child_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=right][data-last-col=right]]:border-l [&[data-pinned][data-last-col]]:border-border"
+                        className={cn(
+                          "relative h-10 truncate data-pinned:bg-muted/90 data-pinned:backdrop-blur-xs [&:not([data-pinned]):has(+[data-pinned])_div.cursor-col-resize:last-child]:opacity-0 [&[data-last-col=left]_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=left][data-last-col=left]]:border-r [&[data-pinned=right]:last-child_div.cursor-col-resize:last-child]:opacity-0 [&[data-pinned=right][data-last-col=right]]:border-l [&[data-pinned][data-last-col]]:border-border",
+                          header.column.columnDef.meta?.onHeaderClick &&
+                            "cursor-pointer",
+                        )}
                         colSpan={header.colSpan}
                         style={{ ...getPinningStyles(column, !!selected) }}
                         data-pinned={isPinned || undefined}
+                        onClick={header.column.columnDef.meta?.onHeaderClick}
                         data-last-col={
                           isLastLeftPinned
                             ? "left"
@@ -151,6 +157,10 @@ export function DataTable<TData, TValue>({
                                   header.getContext(),
                                 )}
                           </span>
+
+                          {header.column.columnDef.meta?.allowFilter && (
+                            <ChevronsUpDown className="size-4" />
+                          )}
 
                           {/* <DataTableColumnPinning header={header} /> */}
 

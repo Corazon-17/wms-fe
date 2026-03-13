@@ -7,5 +7,7 @@ declare module "@tanstack/react-table" {
   > {
     sticky?: "left" | "right";
     align?: "left" | "center" | "right";
+    allowFilter?: boolean;
+    onHeaderClick?: () => void;
   }
 }

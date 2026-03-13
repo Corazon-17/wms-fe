@@ -6,7 +6,7 @@ type LogoProps = {
   className?: string;
 };
 
-export default function Logo({ size = "lg", ...props }: LogoProps) {
+export function Logo({ size = "lg", ...props }: LogoProps) {
   const sizes = {
     sm: {
       parent: "size-8",

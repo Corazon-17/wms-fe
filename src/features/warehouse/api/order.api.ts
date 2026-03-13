@@ -1,10 +1,11 @@
 import { axiosClient } from "@/lib/axios";
 import type { Response } from "@/types/request";
 import type {
-  Order,
+  OrderDetail,
   OrderItem,
   OrderListResponse,
   OrderQueryParams,
+  WMSStatusResponse,
 } from "../types/order.type";
 
 export const getOrders = (
@@ -13,8 +14,20 @@ export const getOrders = (
   return axiosClient.get("/orders", { params });
 };
 
-export const getOrder = (orderSN: string): Promise<Response<Order>> => {
+export const getOrder = (orderSN: string): Promise<Response<OrderDetail>> => {
   return axiosClient.get(`/orders/${orderSN}`);
+};
+
+export const getWMSStatuses = (): Promise<Response<WMSStatusResponse[]>> => {
+  return axiosClient.get(`/orders/wms-statuses`);
+};
+
+export const getMarketplaceStatuses = (): Promise<Response<string[]>> => {
+  return axiosClient.get(`/orders/marketplace-statuses`);
+};
+
+export const getShippingStatuses = (): Promise<Response<string[]>> => {
+  return axiosClient.get(`/orders/shipping-statuses`);
 };
 
 export const getOrderItems = (
@@ -27,7 +40,7 @@ export const syncOrders = () => {
   return axiosClient.post("/orders/sync");
 };
 
-export const pickOrder = (orderSN: string) => {
+export const pickupOrder = (orderSN: string) => {
   return axiosClient.post(`/orders/${orderSN}/pick`);
 };
 
