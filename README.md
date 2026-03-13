@@ -1,73 +1,183 @@
-# React + TypeScript + Vite
+# WMS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend application for the **Warehouse Management System (WMS)** built for the marketplace integration technical assessment.
 
-Currently, two official plugins are available:
+This application allows warehouse operators to:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View and manage marketplace orders
+- Perform warehouse lifecycle actions (Pickup → Pack → Ship)
+- Monitor order status and summary statistics
+- Interact with the WMS backend API
 
-## React Compiler
+The frontend communicates with the backend service that integrates with the **Marketplace Mock API**.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+---
 
-## Expanding the ESLint configuration
+# Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Framework
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React** – UI framework
+- **Vite** – Fast development build tool
+- **TypeScript** – Static typing
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## UI & Styling
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Shadcn/UI** – Component library
+- **TailwindCSS** – Utility-first CSS framework
+
+## Data Fetching
+
+- **Axios** – HTTP client
+- **TanStack Query** – Server state management and caching
+
+## Forms & Validation
+
+- **React Hook Form** – Form management
+- **Zod** – Schema validation
+
+## Table Management
+
+- **TanStack Table** – Headless table utilities for building flexible tables
+
+---
+
+# Features
+
+- Authentication
+- Order listing with pagination, sorting, and filtering
+- Order detail view
+- Warehouse actions:
+  - Pickup
+  - Pack
+  - Ship
+- Dashboard order summary
+- API integration with WMS backend
+- Dynamic UI based on `allowedActions` from backend
+
+---
+
+# Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Corazon-17/wms-fe.git
+cd wms-fe
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Copy environment file
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+Update values in `.env` if needed.
+
+### 3. Install dependencies
+
+```bash
+pnpm install
+```
+
+### 4. Start development server
+
+```bash
+pnpm dev
+```
+
+The application will start at:
+
+```
+http://localhost:5173
+```
+
+---
+
+# Development
+
+### Build project
+
+```bash
+pnpm build
+```
+
+### Preview production build
+
+```bash
+pnpm preview
+```
+
+---
+
+# API Integration
+
+This frontend communicates with the WMS backend API.
+
+Example API endpoints used:
+
+```
+POST /auth/login
+GET  /api/orders
+GET  /api/orders/:order_sn
+POST /api/orders/:order_sn/pick
+POST /api/orders/:order_sn/pack
+POST /api/orders/:order_sn/ship
+GET  /api/orders/summary
+```
+
+Server state is managed using **TanStack Query**, and all API requests are handled through a centralized **Axios client**.
+
+---
+
+# UI Components
+
+UI components are built using **Shadcn/UI** and styled with **TailwindCSS**.
+
+Examples include:
+
+- Button
+- Input
+- Table
+- Dialog
+- Card
+
+Tables are implemented using **TanStack Table** to support:
+
+- Sorting
+- Pagination
+- Column configuration
+- Dynamic rendering
+
+---
+
+# Forms
+
+Forms are handled using:
+
+- **React Hook Form**
+- **Zod** for schema validation
+
+Example validation workflow:
+
+```
+Zod schema
+      ↓
+React Hook Form resolver
+      ↓
+Validated form submission
+```
+
+---
+
+# Notes
+
+- This project assumes the **WMS backend server is running**
+- Marketplace API integration is handled by the backend service
+- Frontend focuses only on warehouse operations and UI state
+
+---
+
+# License
+
+This project is for technical assessment purposes.
