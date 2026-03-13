@@ -1,5 +1,11 @@
 export type ActionType = "pick" | "pack" | "ship";
 
+export type FilterFieldType =
+  | "marketplace_status"
+  | "shipping_status"
+  | "wms_status_id"
+  | null;
+
 export type Order = {
   orderSN: string;
   wmsStatus: string;

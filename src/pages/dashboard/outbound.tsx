@@ -17,6 +17,7 @@ import {
   useOrderSummary,
 } from "@/features/warehouse/queries/order.query";
 import type {
+  FilterFieldType,
   Order,
   OrderQueryParams,
 } from "@/features/warehouse/types/order.type";
@@ -29,9 +30,7 @@ import { useEffect, useState } from "react";
 
 export default function Outbound() {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [filterField, setFilterField] = useState<
-    "marketplace_status" | "shipping_status" | "wms_status" | null
-  >(null);
+  const [filterField, setFilterField] = useState<FilterFieldType>(null);
 
   const [openOrderDetail, setOpenOrderDetail] = useState<boolean>(false);
   const [orderSN, setOrderSN] = useState<string>("");
@@ -54,12 +53,12 @@ export default function Outbound() {
   const shippingStatusOptions = useShippingStatusOptions(
     filterField === "shipping_status",
   );
-  const wmsStatusOptions = useWMSStatusOptions(filterField === "wms_status");
+  const wmsStatusOptions = useWMSStatusOptions(filterField === "wms_status_id");
 
   const filterOptionMap = {
     marketplace_status: marketplaceStatusOptions,
     shipping_status: shippingStatusOptions,
-    wms_status: wmsStatusOptions,
+    wms_status_id: wmsStatusOptions,
   };
   type FilterOptionKey = keyof typeof filterOptionMap;
 
@@ -111,7 +110,7 @@ export default function Outbound() {
         align: "center",
         allowFilter: true,
         onHeaderClick: () => {
-          setFilterField("wms_status");
+          setFilterField("wms_status_id");
           setOpenFilter(true);
         },
       },
