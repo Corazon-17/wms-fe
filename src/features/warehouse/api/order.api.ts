@@ -50,5 +50,5 @@ export const shipOrder = (orderSN: string) => {
 };
 
 export const getOrderSummary = (): Promise<Response<OrderSummaryResponse>> => {
-  return axiosClient.get("/api/orders/summary");
+  return axiosClient.get("/orders/summary");
 };

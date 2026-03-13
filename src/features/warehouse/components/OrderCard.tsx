@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 import { ArrowUpIcon } from "lucide-react";
 
-type CardProps = {
+type OrderCardProps = {
   title: string;
   value?: number;
   description: string;
   status: "up" | "down";
 };
 
-export function Card(props: CardProps) {
+export function OrderCard(props: OrderCardProps) {
   return (
     <div className="flex flex-col gap-1 justify-center w-full h-25 border rounded-md px-4 py-1">
       <span className="text-xs mb-1.5 text-neutral-500">{props.title}</span>

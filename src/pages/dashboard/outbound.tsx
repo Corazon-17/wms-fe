@@ -1,4 +1,4 @@
-import { Card, Filter, PageTitle } from "@/components";
+import { Filter, PageTitle } from "@/components";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,12 +6,16 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { OrderCard } from "@/features/warehouse/components/OrderCard";
 import { OrderDetailDialog } from "@/features/warehouse/components/OrderDetailDialog";
 import OrderStatus from "@/features/warehouse/components/OrderStatus";
 import useMarketplaceStatusOptions from "@/features/warehouse/hooks/useMarketplaceStatusOptions";
 import useShippingStatusOptions from "@/features/warehouse/hooks/useShippingStatusOptions";
 import useWMSStatusOptions from "@/features/warehouse/hooks/useWMSStatusOptions";
-import { useOrders } from "@/features/warehouse/queries/order.query";
+import {
+  useOrders,
+  useOrderSummary,
+} from "@/features/warehouse/queries/order.query";
 import type {
   Order,
   OrderQueryParams,
@@ -34,6 +38,8 @@ export default function Outbound() {
 
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 1500);
+
+  const { data: orderSummary } = useOrderSummary();
 
   const { params, updateParams } = useQueryParams<OrderQueryParams>({
     page: 1,
@@ -161,15 +167,15 @@ export default function Outbound() {
       <PageTitle title="Outbound" subTitle="Manage all outbound process" />
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        <Card
+        <OrderCard
           title="Total order"
-          value={1284}
+          value={orderSummary?.totalOrders}
           description="12% this month"
           status="up"
         />
-        <Card
+        <OrderCard
           title="Cancelled"
-          value={269}
+          value={orderSummary?.cancelledOrders}
           description="5% this month"
           status="down"
         />
